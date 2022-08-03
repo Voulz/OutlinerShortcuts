@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Outliner Shortcuts",
+	"Description": "Allows the binding of shortcuts to some basic World Outliner functions like Collapse All or Expand All, and allows the automatic collapsing of the World Outliner on Map open.",
+	"Category": "Editor",
+	"CreatedBy": "Voulz",
+	"CreatedByURL": "https://github.com/Voulz/",
+	"DocsURL": "https://github.com/Voulz/OutlinerShortcuts",
+	"MarketplaceURL": "",
+	"SupportURL": "https://github.com/Voulz/OutlinerShortcuts/issues",
+	"EngineVersion": "5.0",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "OutlinerShortcutsEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
+		}
+	]
+}
