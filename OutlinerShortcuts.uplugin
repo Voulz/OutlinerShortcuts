@@ -8,13 +8,14 @@
 	"CreatedBy": "Voulz",
 	"CreatedByURL": "https://github.com/Voulz/",
 	"DocsURL": "https://github.com/Voulz/OutlinerShortcuts",
-	"MarketplaceURL": "",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/f3c4bf65839d429cb8096e97787e04ed",
 	"SupportURL": "https://github.com/Voulz/OutlinerShortcuts/issues",
 	"EngineVersion": "5.0",
 	"CanContainContent": false,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": true,
+	"WhitelistPlatforms": [ "Win64", "Win32" ],
 	"Modules": [
 		{
 			"Name": "OutlinerShortcutsEditor",
