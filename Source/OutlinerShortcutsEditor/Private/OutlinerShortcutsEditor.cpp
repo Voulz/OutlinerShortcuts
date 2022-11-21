@@ -155,7 +155,11 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAll()
 			SOutliner->CollapseAll();
 			return true;
 		}
+#if PRE_UE5_1
+		WARN_H("SceneOutliner is not ready");
+#else
 		WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+#endif
 	}
 	else
 	{
@@ -184,7 +188,11 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseToRoot()
 			}
 			return true;
 		}
+#if PRE_UE5_1
+		WARN_H("SceneOutliner is not ready");
+#else
 		WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+#endif
 	}
 	else
 	{
@@ -205,7 +213,11 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 			SOutliner->ExpandAll();
 			return true;
 		}
+#if PRE_UE5_1
+		WARN_H("SceneOutliner is not ready");
+#else
 		WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+#endif
 	}
 	else
 	{
@@ -215,6 +227,7 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 	return false;
 }
 
+#if UE5_1
 bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners()
 {
 	HERE_D;
@@ -309,6 +322,7 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners()
 
 	return bAllExpanded;
 }
+#endif
 
 ISceneOutliner* FOutlinerShortcutsEditorModule::GetISceneOutliner()
 {
@@ -436,6 +450,7 @@ SSceneOutliner* FOutlinerShortcutsEditorModule::GetSSceneOutliner()
 	return nullptr;
 }
 
+#if UE5_1
 TArray<ISceneOutliner*> FOutlinerShortcutsEditorModule::GetAllISceneOutliners()
 {
 	TArray<ISceneOutliner*> Outliners;
@@ -465,7 +480,6 @@ TArray<ISceneOutliner*> FOutlinerShortcutsEditorModule::GetAllISceneOutliners()
 		else
 		{
 			ERROR_H("Not able to get `LevelEditor`");
-			// TODO: check LevelEditorCreatedEvent
 		}
 	}
 	else
@@ -503,6 +517,7 @@ TArray<SSceneOutliner*> FOutlinerShortcutsEditorModule::GetAllSSceneOutliners()
 
 	return SOutliners;
 }
+#endif
 
 UWorld* FOutlinerShortcutsEditorModule::GetCurrentEditorWorld()
 {

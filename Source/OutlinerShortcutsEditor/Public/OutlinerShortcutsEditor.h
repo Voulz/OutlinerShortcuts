@@ -50,17 +50,21 @@ public:
 	// Expand the most recently used Scene Outliner
 	static bool SceneOutlinerExpandAll();
 
+#if UE5_1
 	// [UE 5.1 Onwards] Collapse all the opened Scene Outliners
 	static bool SceneOutlinerCollapseAllOutliners();
 	// [UE 5.1 Onwards] Collapse to root all the opened Scene Outliners
 	static bool SceneOutlinerCollapseAllOutlinersToRoot();
 	// [UE 5.1 Onwards] Expand all the opened Scene Outliners
 	static bool SceneOutlinerExpandAllOutliners();
+#endif
 
 	static ISceneOutliner* GetISceneOutliner();
 	static SSceneOutliner* GetSSceneOutliner();
+#if UE5_1
 	static TArray<ISceneOutliner*> GetAllISceneOutliners();
 	static TArray<SSceneOutliner*> GetAllSSceneOutliners();
+#endif
 
 	FORCEINLINE static UWorld* GetCurrentEditorWorld();
 	static FSceneOutlinerTreeItemPtr GetWorldTreetItemPtr(SSceneOutliner* SceneOutliner);
