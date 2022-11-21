@@ -8,6 +8,8 @@
 #include "SceneOutlinerFwd.h"
 #include "UObject/ObjectSaveContext.h"
 #include "OutlinerShortcutsEditorDefinitions.h"
+//#include "EditorStyleSet.h"
+#include "Styling/AppStyle.h"
 
 class IModuleListenerInterface
 {
@@ -41,12 +43,25 @@ protected:
 	void MapCommands();
 
 public:
+	// Collapse the most recently used Scene Outliner
 	static bool SceneOutlinerCollapseAll();
+	// Collapse to root the most recently used Scene Outliner
 	static bool SceneOutlinerCollapseToRoot();
+	// Expand the most recently used Scene Outliner
 	static bool SceneOutlinerExpandAll();
+
+	// [UE 5.1 Onwards] Collapse all the opened Scene Outliners
+	static bool SceneOutlinerCollapseAllOutliners();
+	// [UE 5.1 Onwards] Collapse to root all the opened Scene Outliners
+	static bool SceneOutlinerCollapseAllOutlinersToRoot();
+	// [UE 5.1 Onwards] Expand all the opened Scene Outliners
+	static bool SceneOutlinerExpandAllOutliners();
 
 	static ISceneOutliner* GetISceneOutliner();
 	static SSceneOutliner* GetSSceneOutliner();
+	static TArray<ISceneOutliner*> GetAllISceneOutliners();
+	static TArray<SSceneOutliner*> GetAllSSceneOutliners();
+
 	FORCEINLINE static UWorld* GetCurrentEditorWorld();
 	static FSceneOutlinerTreeItemPtr GetWorldTreetItemPtr(SSceneOutliner* SceneOutliner);
 	FORCEINLINE static bool IsSceneOutlinerReady(SSceneOutliner* SceneOutliner);
@@ -61,7 +76,11 @@ public:
 		TEXT("OutlinerShortcutsCommands"), // Context name for fast lookup
 		FText::FromString("Outliner Shortcuts"), // Context name for displaying
 		NAME_None,   // No parent context
-		FEditorStyle::GetStyleSetName() // Icon Style Set
+//#if PRE_UE5_1
+//		FEditorStyle::GetStyleSetName() // Icon Style Set
+//#else
+		FAppStyle::GetAppStyleSetName()
+//#endif
 		)
 	{
 	}
@@ -72,4 +91,9 @@ public:
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAll;
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseToRoot;
 	TSharedPtr<FUICommandInfo> SceneOutlinerExpandAll;
+#if UE5_1
+	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAllOutliners;
+	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAllOutlinersToRoot;
+	TSharedPtr<FUICommandInfo> SceneOutlinerExpandAllOutliners;
+#endif
 };

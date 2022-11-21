@@ -1,7 +1,12 @@
 # OutlinerShortcuts
 
 **Outliner Shortcuts** is an editor only plugin that allows the binding of shortcuts to some basic *World Outliner* functions like `Collapse All` and `Expand All`, and a new function `Collapse to Root` was also added.  
-Another functionality of the plugin is to automatically `Expand`/`Collapse`/`Collapse to Root` the *World Outliner* when a Map opens.
+Another functionality of the plugin is to automatically `Expand`/`Collapse`/`Collapse to Root` the *World Outliner* when a Map opens.  
+
+# Support
+
+If you find any useful and they save you time or money, please consider supporting my work! :)  
+[Buy me a coffee](https://www.buymeacoffee.com/voulz) or [Donate](https://www.paypal.com/donate/?business=8DUZ3UMZ28P9Y&no_recurring=1&item_name=I+create+plugins+for+multiple+software+like+Unreal+Engine.+If+you+find+any+useful%2C+please+consider+supporting+my+work%21+%3A%29&currency_code=AUD)
 
 # Binding Shortcuts
 
