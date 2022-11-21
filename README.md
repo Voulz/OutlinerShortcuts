@@ -30,9 +30,10 @@ If you find any useful and they save you time or money, please consider supporti
 
 # Changelog
 
-v1.1 (2022 11-21):
+**v1.1 (2022 11-21):** 
 - Added support for UE 5.1 which allows multiple Outliners.  
-v1.0 (2022 08-03):
+
+**v1.0 (2022 08-03):**  
 - Initial Release
 
 # Technical Information
