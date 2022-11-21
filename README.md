@@ -7,7 +7,7 @@ Another functionality of the plugin is to automatically `Expand`/`Collapse`/`Col
 
 ## UE 5.1
 Unreal Engine 5.1 added the possibility of having multiple Outliners.  
-The commands `Expand All`, `Collapse All` and `Cpllapse to Root` will now work **only** on the Outliner that was last focused, refered to as the most recently used Outliner.  
+The commands `Expand All`, `Collapse All` and `Collapse to Root` will now work **only** on the Outliner that was last focused, referred to as the most recently used Outliner.  
 Three new commands have been added: `Expand All Outliners`, `Collapse All Outliners` and `Collapse All Outliners to Root` which will affect **all** the opened Outliner windows.
 
 # Binding Shortcuts
