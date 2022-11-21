@@ -103,6 +103,22 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 #define __WARNH__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT("[%s]  " Format), __FUNCTIONW__, __VA_ARGS__);
 #endif
 
+#ifndef WARN_D
+#if DEBUG_OUTLINER_SHORTCUTS
+/**
+* @brief WARN DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
+* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+*/
+#define WARN_D(Format, ...) WARN_H(Format,__VA_ARGS__);
+#else // not DEBUG_OUTLINER_SHORTCUTS
+/**
+* @brief WARN DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
+* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+*/
+#define WARN_D(Format, ...) {}
+#endif //DEBUG_OUTLINER_SHORTCUTS
+#endif
+
 #ifndef ERROR
 /**
 * @brief ERROR. Calls UE_LOG(CURRENT_LOG_CATEGORY, Error, ...). Make sure to define CURRENT_LOG_CATEGORY first with
@@ -169,4 +185,39 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 #define BtoS(var) var ? TEXT("True") : TEXT("False")
 #endif
 
-#pragma message("  [OutlinerShortcutsEditorDefinitions] Loaded")
+
+
+#define DEFINITION_FILE "OutlinerShortcutsEditorDefinitions"
+#pragma message("  [" DEFINITION_FILE "]  COMPILING ON UE `" PREPROCESSOR_TO_STRING(ENGINE_MAJOR_VERSION) "`.`" PREPROCESSOR_TO_STRING(ENGINE_MINOR_VERSION) "`.`" PREPROCESSOR_TO_STRING(ENGINE_PATCH_VERSION) "`  [`" PREPROCESSOR_TO_STRING(BRANCH_NAME) "`]")
+
+#ifndef UE4_26
+#define UE4_26 (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION == 26)
+#pragma message("  [" DEFINITION_FILE "]    UE4_26  =  `" PREPROCESSOR_TO_STRING(UE4_26) "`")
+#endif
+
+#ifndef UE4_27
+#define UE4_27 (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 27)
+#pragma message("  [" DEFINITION_FILE "]    UE4_27  =  `" PREPROCESSOR_TO_STRING(UE4_27) "`")
+#endif
+
+#ifndef UE5
+#define UE5 (ENGINE_MAJOR_VERSION == 5)
+#pragma message("  [" DEFINITION_FILE "]    UE5  =  `" PREPROCESSOR_TO_STRING(UE5) "`")
+#endif
+
+#ifndef UE5_0
+#define UE5_0 (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION == 0)
+#pragma message("  [" DEFINITION_FILE "]    UE5_0  =  `" PREPROCESSOR_TO_STRING(UE5_0) "`")
+#endif
+
+#ifndef UE5_1
+#define UE5_1 (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1)
+#pragma message("  [" DEFINITION_FILE "]    UE5_1  =  `" PREPROCESSOR_TO_STRING(UE5_1) "`")
+#endif
+
+#ifndef PRE_UE5_1
+#define PRE_UE5_1 (ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 1))
+#pragma message("  [" DEFINITION_FILE "]    PRE_UE5_1  =  `" PREPROCESSOR_TO_STRING(PRE_UE5_1) "`")
+#endif
+
+#undef DEFINITION_FILE
