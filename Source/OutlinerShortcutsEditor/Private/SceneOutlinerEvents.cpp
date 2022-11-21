@@ -84,16 +84,31 @@ bool FSceneOutlinerEvents::ApplyOutlinerExpansionFromOnMapOpenedSettings(SSceneO
 		switch (EditorSettings->DefaultOutlinerExpansionBehaviorOnMapOpen)
 		{
 		case EOutlinerExpansionBehaviorOnMapOpen::ExpandAll:
+#if PRE_UE5_1
 			LOG_H(" Editor Settings: Expand All...");
 			bSuccess = FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll();
+#else
+			LOG_H(" Editor Settings: Expand All Outliners...");
+			bSuccess = FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners();
+#endif
 			break;
 		case EOutlinerExpansionBehaviorOnMapOpen::CollapseAll:
+#if PRE_UE5_1
 			LOG_H(" Editor Settings: Collapse All...");
 			bSuccess = FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAll();
+#else
+			LOG_H(" Editor Settings: Collapse All Outliners...");
+			bSuccess = FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners();
+#endif
 			break;
 		case EOutlinerExpansionBehaviorOnMapOpen::CollapseToRoot:
+#if PRE_UE5_1
 			LOG_H(" Editor Settings: Collapse To Root...");
 			bSuccess = FOutlinerShortcutsEditorModule::SceneOutlinerCollapseToRoot();
+#else
+			LOG_H(" Editor Settings: Collapse All Outliners To Root...");
+			bSuccess = FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutlinersToRoot();
+#endif
 			break;
 		default:
 			break;

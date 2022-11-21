@@ -16,6 +16,8 @@
 #include "ISettingsContainer.h"
 #include "OutlinerShortcutsSettings.h"
 
+#include "Framework/Docking/TabManager.h"
+
 #define LOCTEXT_NAMESPACE "FOutlinerShortcutsEditorModule"
 
 void FOutlinerShortcutsEditorModule::StartupModule()
@@ -114,6 +116,21 @@ void FOutlinerShortcutsEditorModule::MapCommands()
 			FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll();
 		}));
 
+#if UE5_1
+	CommandList->MapAction(Commands.SceneOutlinerCollapseAllOutliners, FExecuteAction::CreateStatic(
+		[]() { 
+			FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners();
+		}));
+	CommandList->MapAction(Commands.SceneOutlinerCollapseAllOutlinersToRoot, FExecuteAction::CreateLambda(
+		[]() {
+			FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutlinersToRoot();
+		}));
+	CommandList->MapAction(Commands.SceneOutlinerExpandAllOutliners, FExecuteAction::CreateLambda(
+		[]() {
+			FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners();
+		}));
+#endif
+
 	// register the commands to the Level Editor to make them available to shortcuts
 	FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
 	if (LevelEditorModule)
@@ -138,7 +155,11 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAll()
 			SOutliner->CollapseAll();
 			return true;
 		}
+#if PRE_UE5_1
 		WARN_H("SceneOutliner is not ready");
+#else
+		WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+#endif
 	}
 	else
 	{
@@ -167,7 +188,11 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseToRoot()
 			}
 			return true;
 		}
+#if PRE_UE5_1
 		WARN_H("SceneOutliner is not ready");
+#else
+		WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+#endif
 	}
 	else
 	{
@@ -188,7 +213,11 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 			SOutliner->ExpandAll();
 			return true;
 		}
+#if PRE_UE5_1
 		WARN_H("SceneOutliner is not ready");
+#else
+		WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+#endif
 	}
 	else
 	{
@@ -198,27 +227,124 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 	return false;
 }
 
+#if UE5_1
+bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners()
+{
+	HERE_D;
+
+	bool bAllCollapsed = true;
+
+	TArray<SSceneOutliner*> SOutliners = GetAllSSceneOutliners();
+	for (SSceneOutliner* SOutliner : SOutliners)
+	{
+		if (IsSceneOutlinerReady(SOutliner))
+		{
+			SOutliner->CollapseAll();
+			bAllCollapsed &= true;
+		}
+		else
+		{
+			bAllCollapsed = false;
+			WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+		}
+	}
+
+	if (SOutliners.Num() == 0)
+	{
+		ERROR_H("Not able to get any `SSceneOutliner`");
+	}
+
+	return bAllCollapsed;
+}
+
+bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutlinersToRoot()
+{
+	HERE_D;
+
+	bool bAllCollapsed = true;
+
+	TArray<SSceneOutliner*> SOutliners = GetAllSSceneOutliners();
+	for (SSceneOutliner* SOutliner : SOutliners)
+	{
+		if (IsSceneOutlinerReady(SOutliner))
+		{
+			SOutliner->CollapseAll();
+			TArray<FSceneOutlinerTreeItemPtr> RootItems = GetSceneOutlinerRootItems(SOutliner);
+			for (FSceneOutlinerTreeItemPtr Item : RootItems)
+			{
+				if (Item)
+				{
+					SOutliner->SetItemExpansion(Item, true);
+				}
+			}
+			bAllCollapsed &= true;
+		}
+		else
+		{
+			bAllCollapsed = false;
+			WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+		}
+	}
+
+	if (SOutliners.Num() == 0)
+	{
+		ERROR_H("Not able to get any `SSceneOutliner`");
+	}
+
+	return bAllCollapsed;
+}
+
+bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners()
+{
+	HERE_D;
+
+	bool bAllExpanded = true;
+
+	TArray<SSceneOutliner*> SOutliners = GetAllSSceneOutliners();
+	for (SSceneOutliner* SOutliner : SOutliners)
+	{
+		if (IsSceneOutlinerReady(SOutliner))
+		{
+			SOutliner->ExpandAll();
+			bAllExpanded &= true;
+		}
+		else
+		{
+			bAllExpanded = false;
+			WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
+		}
+	}
+
+	if (SOutliners.Num() == 0)
+	{
+		ERROR_H("Not able to get any `SSceneOutliner`");
+	}
+
+	return bAllExpanded;
+}
+#endif
+
 ISceneOutliner* FOutlinerShortcutsEditorModule::GetISceneOutliner()
 {
+#if PRE_UE5_1
 	FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
 	if (LevelEditorModule)
 	{
 		if (ILevelEditor* LevelEditor = LevelEditorModule->GetFirstLevelEditor().Get())
 		{
+			
 			if (ISceneOutliner* SceneOutliner = LevelEditor->GetSceneOutliner().Get())
 			{
 				return SceneOutliner;
 			}
 			else
 			{
-				ERROR_H("Not able to get `SceneOutliner`");
+				ERROR_H("Not able to get an `ISceneOutliner` through `LevelEditor->GetSceneOutliner()");
 			}
 		}
 		else
 		{
-			//LevelEditorModule->leve
-			ERROR_H("Not able to get `LevelEditor`");
-			// TODO: check LevelEditorCreatedEvent
+			ERROR_H("Not able to get an `ILevelEditor` through `LevelEditorModule->GetFirstLevelEditor()`");
 		}
 	}
 	else
@@ -227,10 +353,14 @@ ISceneOutliner* FOutlinerShortcutsEditorModule::GetISceneOutliner()
 	}
 
 	return nullptr;
+#else
+	return GetSSceneOutliner();
+#endif
 }
 
 SSceneOutliner* FOutlinerShortcutsEditorModule::GetSSceneOutliner()
 {
+#if PRE_UE5_1
 	if (ISceneOutliner* SceneOutliner = GetISceneOutliner())
 	{
 		if (SSceneOutliner* SOutliner = (SSceneOutliner*)SceneOutliner)
@@ -246,9 +376,148 @@ SSceneOutliner* FOutlinerShortcutsEditorModule::GetSSceneOutliner()
 	{
 		ERROR_H("Not able to get `SceneOutliner`");
 	}
+#else
+	FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
+	if (LevelEditorModule)
+	{
+		if (ILevelEditor* LevelEditor = LevelEditorModule->GetFirstLevelEditor().Get())
+		{
+			// The function `LevelEditor->GetMostRecentlyUsedSceneOutliner()` doesn't actually return the most recently used Outliner,
+			// but the most recently opened one! Which can be confusing while using this plugin.
+			// To find the most recently used one, we loop through each of the Tab containing an outliner, and we check the last time it was activated.
+
+			if (auto Manager = LevelEditor->GetTabManager().Get())
+			{
+				WARN_D(" --- Checking all scene Outliners --- ");
+				double LastActivated = 0.;
+				SSceneOutliner* MostRecentOutliner = nullptr;
+				for (auto IOutlinerPtr : LevelEditor->GetAllSceneOutliners())
+				{
+					if (TSharedPtr<ISceneOutliner> IOutlinerPin = IOutlinerPtr.Pin())
+					{
+						if (ISceneOutliner* IOutliner = IOutlinerPin.Get())
+						{
+							if (SSceneOutliner* SOutliner = (SSceneOutliner*)IOutliner)
+							{
+								FName ID = SOutliner->GetOutlinerIdentifier();
+								WARN_D("Outliner `%s`:", *ID.ToString());
+
+								if (auto OutlinerTab = Manager->FindExistingLiveTab(ID).Get())
+								{
+									LOG_D("  Outliner Tab: `%s` [ID: `%s`] [last activated: %f]", *OutlinerTab->GetTabLabel().ToString(), *OutlinerTab->GetLayoutIdentifier().ToString(), OutlinerTab->GetLastActivationTime());
+									if (OutlinerTab->GetLastActivationTime() > LastActivated)
+									{
+										LastActivated = OutlinerTab->GetLastActivationTime();
+										MostRecentOutliner = SOutliner;
+									}
+								}
+								else
+								{
+									WARN_D("  !! Did NOT find the tab !!");
+								}
+							}
+						}
+
+					}
+				}
+
+				if (MostRecentOutliner)
+				{
+					WARN_D(" --- Most Recent Outliner is: `%s`", *MostRecentOutliner->GetOutlinerIdentifier().ToString());
+					return MostRecentOutliner;
+				}
+			}
+			else
+			{
+				ERROR_H("Not able to get the TabManager throguh `LevelEditor->GetTabManager()`");
+			}
+
+			// if all the above fails, we fallback on the default one
+			LOG_D("Not able to find the most recently used Outliner");
+			return (SSceneOutliner*)LevelEditor->GetMostRecentlyUsedSceneOutliner().Get();
+		}
+		else
+		{
+			ERROR_H("Not able to get an `ILevelEditor` through `LevelEditorModule->GetFirstLevelEditor()`");
+		}
+	}
+	else
+	{
+		ERROR_H("Not able to load `LevelEditor` module");
+	}
+#endif
 
 	return nullptr;
 }
+
+#if UE5_1
+TArray<ISceneOutliner*> FOutlinerShortcutsEditorModule::GetAllISceneOutliners()
+{
+	TArray<ISceneOutliner*> Outliners;
+#if PRE_UE5_1
+	if (ISceneOutliner* SceneOutliner = GetISceneOutliner())
+	{
+		Outliners.Add(SceneOutliner);
+	}
+#else
+	FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
+	if (LevelEditorModule)
+	{
+		if (ILevelEditor* LevelEditor = LevelEditorModule->GetFirstLevelEditor().Get())
+		{
+			for (auto SceneOutliner : LevelEditor->GetAllSceneOutliners())
+			{
+				if (SceneOutliner.IsValid() && SceneOutliner.Pin().Get())
+				{
+					Outliners.Add(SceneOutliner.Pin().Get());
+				}
+				else
+				{
+					ERROR_H("Not able to get `SceneOutliner`");
+				}
+			}
+		}
+		else
+		{
+			ERROR_H("Not able to get `LevelEditor`");
+		}
+	}
+	else
+	{
+		ERROR_H("Not able to load `LevelEditor` module");
+	}
+#endif
+
+
+
+	return Outliners;
+}
+
+TArray<SSceneOutliner*> FOutlinerShortcutsEditorModule::GetAllSSceneOutliners()
+{
+	TArray<SSceneOutliner*> SOutliners;
+
+	TArray<ISceneOutliner*> SceneOutliners = GetAllISceneOutliners();
+	for (ISceneOutliner* SceneOutliner : SceneOutliners)
+	{
+		if (SSceneOutliner* SOutliner = (SSceneOutliner*)SceneOutliner)
+		{
+			SOutliners.Add(SOutliner);
+		}
+		else
+		{
+			ERROR_H("Not able to convert `ISceneOutliner` to `SSceneOutliner`");
+		}
+	}
+
+	if (SOutliners.Num() == 0)
+	{
+		ERROR_H("Not able to get any `SceneOutliner`");
+	}
+
+	return SOutliners;
+}
+#endif
 
 UWorld* FOutlinerShortcutsEditorModule::GetCurrentEditorWorld()
 {
@@ -306,7 +575,6 @@ TArray<FSceneOutlinerTreeItemPtr> FOutlinerShortcutsEditorModule::GetSceneOutlin
 			}
 		}
 
-
 		//WARN("Setting Selection");
 
 		SOutliner->SetSelection([&RootItems, SOutliner, SelectionID](ISceneOutlinerTreeItem& Item)
@@ -346,13 +614,19 @@ TArray<FSceneOutlinerTreeItemPtr> FOutlinerShortcutsEditorModule::GetSceneOutlin
 
 void OutlinerShortcutsCommands::RegisterCommands()
 {
-	UI_COMMAND(SceneOutlinerCollapseAll, "Collapse All", "Collapse all Actors and Folders in the Scene Outliner", EUserInterfaceActionType::Button, FInputGesture());
-	UI_COMMAND(SceneOutlinerCollapseToRoot, "Collapse to Root", "Collapse all Actors and Folders in the Scene Outliner but keep the root element expanded", EUserInterfaceActionType::Button, FInputGesture());
-	UI_COMMAND(SceneOutlinerExpandAll, "Expand All", "Expand all Actors and Folders in the Scene Outliner", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(SceneOutlinerCollapseAll, "Collapse All", "Collapse all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(SceneOutlinerCollapseToRoot, "Collapse to Root", "Collapse all Actors and Folders in the current Scene Outliner but keep the root element expanded", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(SceneOutlinerExpandAll, "Expand All", "Expand all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputGesture());
+	
+#if UE5_1
+	UI_COMMAND(SceneOutlinerCollapseAllOutliners, "Collapse All Outliners", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(SceneOutlinerCollapseAllOutlinersToRoot, "Collapse All Outliners to Root", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners but keep their root element expanded", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(SceneOutlinerExpandAllOutliners, "Expand All Outliners", "[UE 5.1 Onwards] Expand all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputGesture());
+#endif
 
 	LOG("Commands Registered");
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FOutlinerShortcutsEditorModule, OutlinerShortcuts)
