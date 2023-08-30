@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 
@@ -37,8 +38,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief LOG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define LOG(Format, ...) __LOG__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __LOG__(LogCategory, Format, ...) UE_LOG(LogCategory, Display, TEXT(Format), __VA_ARGS__);
+#define LOG(Format, ...) __LOG__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __LOG__(LogCategory, Format, ...) UE_LOG(LogCategory, Display, TEXT(Format), ##__VA_ARGS__);
 #endif
 
 #ifndef LOG_H
@@ -46,8 +47,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief LOG + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define LOG_H(Format, ...) __LOGH__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __LOGH__(LogCategory, Format, ...) UE_LOG(LogCategory, Display, TEXT("[%s]  " Format), __FUNCTIONW__, __VA_ARGS__);
+#define LOG_H(Format, ...) __LOGH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __LOGH__(LogCategory, Format, ...) UE_LOG(LogCategory, Display, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
 #endif
 
 #ifndef LOG_D
@@ -56,7 +57,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief LOG DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define LOG_D(Format, ...) LOG_H(Format,__VA_ARGS__);
+#define LOG_D(Format, ...) LOG_H(Format,##__VA_ARGS__);
 #else // not DEBUG_OUTLINER_SHORTCUTS
 /**
 * @brief LOG DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
@@ -72,8 +73,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief LOG VERBOSE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Log, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define LOGV(Format, ...) __LOGV__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __LOGV__(LogCategory, Format, ...) UE_LOG(LogCategory, Log, TEXT(Format), __VA_ARGS__);
+#define LOGV(Format, ...) __LOGV__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __LOGV__(LogCategory, Format, ...) UE_LOG(LogCategory, Log, TEXT(Format), ##__VA_ARGS__);
 #endif
 
 #ifndef LOGV_H
@@ -81,8 +82,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief LOG VERBOSE + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Log, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define LOGV_H(Format, ...) __LOGVH__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __LOGVH__(LogCategory, Format, ...) UE_LOG(LogCategory, Log, TEXT("[%s]  " Format), __FUNCTIONW__, __VA_ARGS__);
+#define LOGV_H(Format, ...) __LOGVH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __LOGVH__(LogCategory, Format, ...) UE_LOG(LogCategory, Log, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
 #endif
 
 #ifndef WARN
@@ -90,8 +91,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief WARN. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define WARN(Format, ...) __WARN__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __WARN__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT(Format), __VA_ARGS__);
+#define WARN(Format, ...) __WARN__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __WARN__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT(Format), ##__VA_ARGS__);
 #endif
 
 #ifndef WARN_H
@@ -99,8 +100,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief WARN + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define WARN_H(Format, ...) __WARNH__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __WARNH__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT("[%s]  " Format), __FUNCTIONW__, __VA_ARGS__);
+#define WARN_H(Format, ...) __WARNH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __WARNH__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
 #endif
 
 #ifndef WARN_D
@@ -109,7 +110,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief WARN DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define WARN_D(Format, ...) WARN_H(Format,__VA_ARGS__);
+#define WARN_D(Format, ...) WARN_H(Format,##__VA_ARGS__);
 #else // not DEBUG_OUTLINER_SHORTCUTS
 /**
 * @brief WARN DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
@@ -124,8 +125,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief ERROR. Calls UE_LOG(CURRENT_LOG_CATEGORY, Error, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define ERROR(Format, ...) __ERROR__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __ERROR__(LogCategory, Format, ...) UE_LOG(LogCategory, Error, TEXT(Format), __VA_ARGS__);
+#define ERROR(Format, ...) __ERROR__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __ERROR__(LogCategory, Format, ...) UE_LOG(LogCategory, Error, TEXT(Format), ##__VA_ARGS__);
 #endif
 
 #ifndef ERROR_H
@@ -133,8 +134,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 * @brief ERROR + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Error, ...). Make sure to define CURRENT_LOG_CATEGORY first with
 * #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
 */
-#define ERROR_H(Format, ...) __ERRORH__(CURRENT_LOG_CATEGORY, Format, __VA_ARGS__);
-#define __ERRORH__(LogCategory, Format, ...) UE_LOG(LogCategory, Error, TEXT("[%s]  " Format), __FUNCTIONW__, __VA_ARGS__);
+#define ERROR_H(Format, ...) __ERRORH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
+#define __ERRORH__(LogCategory, Format, ...) UE_LOG(LogCategory, Error, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
 #endif
 
 
