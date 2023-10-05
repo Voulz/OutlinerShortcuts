@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.1.1",
+	"VersionName": "1.1.2",
 	"FriendlyName": "Outliner Shortcuts",
 	"Description": "Allows the binding of shortcuts to some basic World Outliner functions like Collapse All or Expand All, and allows the automatic collapsing of the World Outliner on Map open.",
 	"Category": "Editor",

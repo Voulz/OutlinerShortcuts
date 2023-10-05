@@ -6,9 +6,7 @@
 #include "Modules/ModuleManager.h"
 
 #include "SceneOutlinerFwd.h"
-#include "UObject/ObjectSaveContext.h"
 #include "OutlinerShortcutsEditorDefinitions.h"
-//#include "EditorStyleSet.h"
 #include "Styling/AppStyle.h"
 
 class IModuleListenerInterface
@@ -32,8 +30,8 @@ public:
 	virtual void ShutdownModule() override;
 
 protected:
-	void RegisterSettings();
-	void UnregisterSettings();
+	static void RegisterSettings();
+	static void UnregisterSettings();
 
 	TArray<TSharedRef<IModuleListenerInterface>> ModuleListeners;
 	void AddModuleListeners();
@@ -67,7 +65,7 @@ public:
 #endif
 
 	FORCEINLINE static UWorld* GetCurrentEditorWorld();
-	static FSceneOutlinerTreeItemPtr GetWorldTreetItemPtr(SSceneOutliner* SceneOutliner);
+	static FSceneOutlinerTreeItemPtr GetWorldTreeItemPtr(SSceneOutliner* SceneOutliner);
 	FORCEINLINE static bool IsSceneOutlinerReady(SSceneOutliner* SceneOutliner);
 	static TArray<FSceneOutlinerTreeItemPtr> GetSceneOutlinerRootItems(SSceneOutliner* SOutliner);
 };

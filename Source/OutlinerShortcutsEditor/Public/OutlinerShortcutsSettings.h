@@ -3,8 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-#include "OutlinerShortcutsEditorDefinitions.h"
 #include "UObject/Class.h"
 #include "UObject/ReflectedTypeAccessors.h"
 

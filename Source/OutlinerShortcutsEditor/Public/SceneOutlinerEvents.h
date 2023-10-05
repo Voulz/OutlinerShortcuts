@@ -12,20 +12,20 @@
 class OUTLINERSHORTCUTSEDITOR_API FSceneOutlinerEvents : public IModuleListenerInterface
 {
 public:
-	virtual void OnStartupModule();
-	virtual void OnShutdownModule();
+	virtual void OnStartupModule() override;
+	virtual void OnShutdownModule() override;
 
 public:
 	void OnMapOpened(const FString& Filename, bool bAsTemplate);
 
 	//class UMapOutlinerData* LatestLoadedData;
 	FTSTicker::FDelegateHandle TickUntilActorsLoadedHandle;
-	bool TickUntilActorsLoaded(float DeltaTime);
+	static bool TickUntilActorsLoaded(float DeltaTime);
 	/*
 	 *
 	 */
-	bool ApplyOutlinerActionsFromOnMapOpenedSettings();
-	bool ApplyOutlinerExpansionFromOnMapOpenedSettings(SSceneOutliner* SceneOutliner);
+	static bool ApplyOutlinerActionsFromOnMapOpenedSettings();
+	static bool ApplyOutlinerExpansionFromOnMapOpenedSettings(const SSceneOutliner* SceneOutliner);
 private:
 
 	/** Private array of event callback releaser data, inspired from FAcquiredResources */

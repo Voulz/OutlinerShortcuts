@@ -7,183 +7,145 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 
-
-#undef CURRENT_LOG_CATEGORY
-#define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
-
 #undef DEBUG_OUTLINER_SHORTCUTS
 #define DEBUG_OUTLINER_SHORTCUTS 0
 
 
-
-// ----------- For Mac where these are not available. To be tested -------------
-#ifndef _CRT_WIDE_
-#define _CRT_WIDE_(s) L ## s
-#endif
-#ifndef _CRT_WIDE
-#define _CRT_WIDE(s) _CRT_WIDE_(s)
-#endif
-#ifndef __FILEW__
-#define __FILEW__     _CRT_WIDE(__FILE__)
-#endif
-#ifndef __FUNCTIONW__
-#define __FUNCTIONW__ _CRT_WIDE(__FUNCTION__)
-#endif
-// ---------------------------------------------------------------
-
-
-
-#ifndef LOG
+#ifndef OUTLINER_SHORTCUTS_LOG
 /**
-* @brief LOG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief LOG. Calls UE_LOG(LogOutlinerShortcutsEditor, Display, ...).
 */
-#define LOG(Format, ...) __LOG__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __LOG__(LogCategory, Format, ...) UE_LOG(LogCategory, Display, TEXT(Format), ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_LOG(Format, ...) __OUTLINER_SHORTCUTS_LOG__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_LOG__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Display, TEXT(Format), ##__VA_ARGS__);
 #endif
 
 #ifndef LOG_H
 /**
-* @brief LOG + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief LOG + HERE. Calls UE_LOG(LogOutlinerShortcutsEditor, Display, ...).
 */
-#define LOG_H(Format, ...) __LOGH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __LOGH__(LogCategory, Format, ...) UE_LOG(LogCategory, Display, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_LOG_H(Format, ...) __OUTLINER_SHORTCUTS_LOGH__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_LOGH__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Display, TEXT("[%hs]  " Format), __FUNCTION__, ##__VA_ARGS__);
 #endif
 
-#ifndef LOG_D
+#ifndef OUTLINER_SHORTCUTS_LOG_D
 #if DEBUG_OUTLINER_SHORTCUTS
 /**
-* @brief LOG DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief LOG DEBUG. Calls UE_LOG(LogOutlinerShortcutsEditor, Display, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. 
 */
-#define LOG_D(Format, ...) LOG_H(Format,##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_LOG_D(Format, ...) OUTLINER_SHORTCUTS_LOG_H(Format, ##__VA_ARGS__);
 #else // not DEBUG_OUTLINER_SHORTCUTS
 /**
-* @brief LOG DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Display, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief LOG DEBUG. Calls UE_LOG(LogOutlinerShortcutsEditor, Display, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. 
 */
-#define LOG_D(Format, ...) {}
+#define OUTLINER_SHORTCUTS_LOG_D(Format, ...) {}
 #endif //DEBUG_OUTLINER_SHORTCUTS
 #endif
 
 
-#ifndef LOGV
+#ifndef OUTLINER_SHORTCUTS_LOGV
 /**
-* @brief LOG VERBOSE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Log, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief LOG VERBOSE. Calls UE_LOG(LogOutlinerShortcutsEditor, Log, ...). 
 */
-#define LOGV(Format, ...) __LOGV__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __LOGV__(LogCategory, Format, ...) UE_LOG(LogCategory, Log, TEXT(Format), ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_LOGV(Format, ...) __OUTLINER_SHORTCUTS_LOGV__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_LOGV__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Log, TEXT(Format), ##__VA_ARGS__);
 #endif
 
-#ifndef LOGV_H
+#ifndef OUTLINER_SHORTCUTS_LOGV_H
 /**
-* @brief LOG VERBOSE + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Log, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief LOG VERBOSE + HERE. Calls UE_LOG(LogOutlinerShortcutsEditor, Log, ...).
 */
-#define LOGV_H(Format, ...) __LOGVH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __LOGVH__(LogCategory, Format, ...) UE_LOG(LogCategory, Log, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_LOGV_H(Format, ...) __OUTLINER_SHORTCUTS_LOGVH__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_LOGVH__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Log, TEXT("[%hs]  " Format), __FUNCTION__, ##__VA_ARGS__);
 #endif
 
-#ifndef WARN
+#ifndef OUTLINER_SHORTCUTS_WARN
 /**
-* @brief WARN. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief WARN. Calls UE_LOG(LogOutlinerShortcutsEditor, Warning, ...). 
 */
-#define WARN(Format, ...) __WARN__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __WARN__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT(Format), ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_WARN(Format, ...) __OUTLINER_SHORTCUTS_WARN__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_WARN__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Warning, TEXT(Format), ##__VA_ARGS__);
 #endif
 
-#ifndef WARN_H
+#ifndef OUTLINER_SHORTCUTS_WARN_H
 /**
-* @brief WARN + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief WARN + HERE. Calls UE_LOG(LogOutlinerShortcutsEditor, Warning, ...).
 */
-#define WARN_H(Format, ...) __WARNH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __WARNH__(LogCategory, Format, ...) UE_LOG(LogCategory, Warning, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_WARN_H(Format, ...) __OUTLINER_SHORTCUTS_WARNH__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_WARNH__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Warning, TEXT("[%hs]  " Format), __FUNCTION__, ##__VA_ARGS__);
 #endif
 
-#ifndef WARN_D
+#ifndef OUTLINER_SHORTCUTS_WARN_D
 #if DEBUG_OUTLINER_SHORTCUTS
 /**
-* @brief WARN DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief WARN DEBUG. Calls UE_LOG(LogOutlinerShortcutsEditor, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1.
 */
-#define WARN_D(Format, ...) WARN_H(Format,##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_WARN_D(Format, ...) OUTLINER_SHORTCUTS_WARN_H(Format,##__VA_ARGS__);
 #else // not DEBUG_OUTLINER_SHORTCUTS
 /**
-* @brief WARN DEBUG. Calls UE_LOG(CURRENT_LOG_CATEGORY, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief WARN DEBUG. Calls UE_LOG(LogOutlinerShortcutsEditor, Warning, ...) if DEBUG_OUTLINER_SHORTCUTS is set to 1.
 */
-#define WARN_D(Format, ...) {}
+#define OUTLINER_SHORTCUTS_WARN_D(Format, ...) {}
 #endif //DEBUG_OUTLINER_SHORTCUTS
 #endif
 
-#ifndef ERROR
+#ifndef OUTLINER_SHORTCUTS_ERROR
 /**
-* @brief ERROR. Calls UE_LOG(CURRENT_LOG_CATEGORY, Error, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief ERROR. Calls UE_LOG(LogOutlinerShortcutsEditor, Error, ...).
 */
-#define ERROR(Format, ...) __ERROR__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __ERROR__(LogCategory, Format, ...) UE_LOG(LogCategory, Error, TEXT(Format), ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_ERROR(Format, ...) __OUTLINER_SHORTCUTS_ERROR__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_ERROR__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Error, TEXT(Format), ##__VA_ARGS__);
 #endif
 
-#ifndef ERROR_H
+#ifndef OUTLINER_SHORTCUTS_ERROR_H
 /**
-* @brief ERROR + HERE. Calls UE_LOG(CURRENT_LOG_CATEGORY, Error, ...). Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief ERROR + HERE. Calls UE_LOG(LogOutlinerShortcutsEditor, Error, ...).
 */
-#define ERROR_H(Format, ...) __ERRORH__(CURRENT_LOG_CATEGORY, Format, ##__VA_ARGS__);
-#define __ERRORH__(LogCategory, Format, ...) UE_LOG(LogCategory, Error, TEXT("[%s]  " Format), __FUNCTIONW__, ##__VA_ARGS__);
+#define OUTLINER_SHORTCUTS_ERROR_H(Format, ...) __OUTLINER_SHORTCUTS_ERRORH__(Format, ##__VA_ARGS__);
+#define __OUTLINER_SHORTCUTS_ERRORH__(Format, ...) UE_LOG(LogOutlinerShortcutsEditor, Error, TEXT("[%hs]  " Format), __FUNCTION__, ##__VA_ARGS__);
 #endif
 
 
-#ifndef __FILENAME__
+#ifndef __OUTLINER_SHORTCUTS_FILENAME__
 /**
 * @brief Returns the current Filename
 */
-#define __FILENAME__ (wcsrchr(__FILEW__, '\\') ? wcsrchr(__FILEW__, '\\') + 1 : __FILEW__)
+#define __OUTLINER_SHORTCUTS_FILENAME__ (wcsrchr(TEXT(__FILE__), '\\') ? wcsrchr(TEXT(__FILE__), '\\') + 1 : TEXT(__FILE__))
 #endif
 
-#ifndef WHERE
+#ifndef OUTLINER_SHORTCUTS_WHERE
 /**
-* @brief Logs where this function has been called. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief Logs where this function has been called.
 */
-#define WHERE LOG("%s - R%i - %s", __FILENAME__, __LINE__, __FUNCTIONW__);
+#define OUTLINER_SHORTCUTS_WHERE OUTLINER_SHORTCUTS_LOG("%s - R%i - %hs", __OUTLINER_SHORTCUTS_FILENAME__, __LINE__, __FUNCTION__);
 #endif
 
-#ifndef HERE
+#ifndef OUTLINER_SHORTCUTS_HERE
 /**
-* @brief Prints the current function name in the Output. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief Prints the current function name in the Output.
 */
-#define HERE LOGV(" ==== [%s] ==== ", __FUNCTIONW__);
+#define OUTLINER_SHORTCUTS_HERE OUTLINER_SHORTCUTS_LOGV(" ==== [%hs] ==== ", __FUNCTION__);
 #endif
 
-#ifndef HERE_D
+#ifndef OUTLINER_SHORTCUTS_HERE_D
 #if DEBUG_OUTLINER_SHORTCUTS
 /**
-* @brief Prints the current function name in the Output if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief Prints the current function name in the Output if DEBUG_OUTLINER_SHORTCUTS is set to 1.
 */
-#define HERE_D HERE;
+#define OUTLINER_SHORTCUTS_HERE_D OUTLINER_SHORTCUTS_HERE;
 #else // not def DEBUG_OUTLINER_SHORTCUTS
 /**
-* @brief Prints the current function name in the Output if DEBUG_OUTLINER_SHORTCUTS is set to 1. Make sure to define CURRENT_LOG_CATEGORY first with
-* #define CURRENT_LOG_CATEGORY LogOutlinerShortcutsEditor
+* @brief Prints the current function name in the Output if DEBUG_OUTLINER_SHORTCUTS is set to 1.
 */
-#define HERE_D {}
+#define OUTLINER_SHORTCUTS_HERE_D {}
 #endif //DEBUG_OUTLINER_SHORTCUTS
 #endif
 
 
-#ifndef BtoS
+#ifndef OUTLINER_SHORTCUTS_BtoS
 /**
 * @brief Converts a bool to *CHAR for logging
 */
-#define BtoS(var) var ? TEXT("True") : TEXT("False")
+#define OUTLINER_SHORTCUTS_BtoS(var) var ? TEXT("True") : TEXT("False")
 #endif
 
 
