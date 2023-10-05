@@ -15,7 +15,7 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": true,
-	"WhitelistPlatforms": [ "Win64", "Win32" ],
+	"WhitelistPlatforms": [ "Win64", "Win32", "Linux" ],
 	"Modules": [
 		{
 			"Name": "OutlinerShortcutsEditor",
