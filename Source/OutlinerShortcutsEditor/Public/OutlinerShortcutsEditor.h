@@ -66,7 +66,7 @@ public:
 
 	FORCEINLINE static UWorld* GetCurrentEditorWorld();
 	static FSceneOutlinerTreeItemPtr GetWorldTreeItemPtr(SSceneOutliner* SceneOutliner);
-	FORCEINLINE static bool IsSceneOutlinerReady(SSceneOutliner* SceneOutliner);
+	static bool IsSceneOutlinerReady(SSceneOutliner* SceneOutliner);
 	static TArray<FSceneOutlinerTreeItemPtr> GetSceneOutlinerRootItems(SSceneOutliner* SOutliner);
 };
 
