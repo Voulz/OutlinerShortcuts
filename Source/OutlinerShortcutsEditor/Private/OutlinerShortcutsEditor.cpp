@@ -643,4 +643,4 @@ void OutlinerShortcutsCommands::RegisterCommands()
 
 #undef LOCTEXT_NAMESPACE
 
-IMPLEMENT_MODULE(FOutlinerShortcutsEditorModule, OutlinerShortcuts)
+IMPLEMENT_MODULE(FOutlinerShortcutsEditorModule, OutlinerShortcutsEditor)
