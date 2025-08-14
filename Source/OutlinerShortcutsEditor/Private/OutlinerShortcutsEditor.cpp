@@ -132,7 +132,7 @@ void FOutlinerShortcutsEditorModule::MapCommands()
 			FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll();
 		}));
 
-#if UE5_1
+#if UE5_1_ONWARDS
 	CommandList->MapAction(Commands.SceneOutlinerCollapseAllOutliners, FExecuteAction::CreateStatic(
 		[]() { 
 			FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners();
@@ -243,7 +243,7 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 	return false;
 }
 
-#if UE5_1
+#if UE5_1_ONWARDS
 bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners()
 {
 	OUTLINER_SHORTCUTS_HERE_D;
@@ -466,7 +466,7 @@ SSceneOutliner* FOutlinerShortcutsEditorModule::GetSSceneOutliner()
 	return nullptr;
 }
 
-#if UE5_1
+#if UE5_1_ONWARDS
 TArray<ISceneOutliner*> FOutlinerShortcutsEditorModule::GetAllISceneOutliners()
 {
 	TArray<ISceneOutliner*> Outliners;
@@ -628,14 +628,14 @@ TArray<FSceneOutlinerTreeItemPtr> FOutlinerShortcutsEditorModule::GetSceneOutlin
 
 void OutlinerShortcutsCommands::RegisterCommands()
 {
-	UI_COMMAND(SceneOutlinerCollapseAll, "Collapse All", "Collapse all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputGesture());
-	UI_COMMAND(SceneOutlinerCollapseToRoot, "Collapse to Root", "Collapse all Actors and Folders in the current Scene Outliner but keep the root element expanded", EUserInterfaceActionType::Button, FInputGesture());
-	UI_COMMAND(SceneOutlinerExpandAll, "Expand All", "Expand all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(SceneOutlinerCollapseAll, "Collapse All", "Collapse all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputChord());
+	UI_COMMAND(SceneOutlinerCollapseToRoot, "Collapse to Root", "Collapse all Actors and Folders in the current Scene Outliner but keep the root element expanded", EUserInterfaceActionType::Button, FInputChord());
+	UI_COMMAND(SceneOutlinerExpandAll, "Expand All", "Expand all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputChord());
 	
-#if UE5_1
-	UI_COMMAND(SceneOutlinerCollapseAllOutliners, "Collapse All Outliners", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputGesture());
-	UI_COMMAND(SceneOutlinerCollapseAllOutlinersToRoot, "Collapse All Outliners to Root", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners but keep their root element expanded", EUserInterfaceActionType::Button, FInputGesture());
-	UI_COMMAND(SceneOutlinerExpandAllOutliners, "Expand All Outliners", "[UE 5.1 Onwards] Expand all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputGesture());
+#if UE5_1_ONWARDS
+	UI_COMMAND(SceneOutlinerCollapseAllOutliners, "Collapse All Outliners", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputChord());
+	UI_COMMAND(SceneOutlinerCollapseAllOutlinersToRoot, "Collapse All Outliners to Root", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners but keep their root element expanded", EUserInterfaceActionType::Button, FInputChord());
+	UI_COMMAND(SceneOutlinerExpandAllOutliners, "Expand All Outliners", "[UE 5.1 Onwards] Expand all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputChord());
 #endif
 
 	OUTLINER_SHORTCUTS_LOG("Commands Registered");

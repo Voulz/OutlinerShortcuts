@@ -170,7 +170,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 #endif
 
 #ifndef UE5_1
-#define UE5_1 (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1)
+#define UE5_1_ONWARDS (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1)
 #endif
 
 #ifndef PRE_UE5_1
