@@ -48,7 +48,7 @@ public:
 	// Expand the most recently used Scene Outliner
 	static bool SceneOutlinerExpandAll();
 
-#if UE5_1
+#if UE5_1_ONWARDS
 	// [UE 5.1 Onwards] Collapse all the opened Scene Outliners
 	static bool SceneOutlinerCollapseAllOutliners();
 	// [UE 5.1 Onwards] Collapse to root all the opened Scene Outliners
@@ -59,7 +59,7 @@ public:
 
 	static ISceneOutliner* GetISceneOutliner();
 	static SSceneOutliner* GetSSceneOutliner();
-#if UE5_1
+#if UE5_1_ONWARDS
 	static TArray<ISceneOutliner*> GetAllISceneOutliners();
 	static TArray<SSceneOutliner*> GetAllSSceneOutliners();
 #endif
@@ -93,7 +93,7 @@ public:
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAll;
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseToRoot;
 	TSharedPtr<FUICommandInfo> SceneOutlinerExpandAll;
-#if UE5_1
+#if UE5_1_ONWARDS
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAllOutliners;
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAllOutlinersToRoot;
 	TSharedPtr<FUICommandInfo> SceneOutlinerExpandAllOutliners;
