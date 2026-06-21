@@ -1,4 +1,4 @@
-// Copyright Voulz 2021-2022. All Rights Reserved.
+// Copyright Voulz. All Rights Reserved.
 
 #pragma once
 
@@ -151,30 +151,6 @@ DECLARE_LOG_CATEGORY_EXTERN(LogOutlinerShortcutsEditor, Log, All);
 
 
 #define DEFINITION_FILE "OutlinerShortcutsEditorDefinitions"
-#pragma message("  [" DEFINITION_FILE "]  COMPILING ON UE `" PREPROCESSOR_TO_STRING(ENGINE_MAJOR_VERSION) "`.`" PREPROCESSOR_TO_STRING(ENGINE_MINOR_VERSION) "`.`" PREPROCESSOR_TO_STRING(ENGINE_PATCH_VERSION) "`  [`" PREPROCESSOR_TO_STRING(BRANCH_NAME) "`]")
-
-#ifndef UE4_26
-#define UE4_26 (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION == 26)
-#endif
-
-#ifndef UE4_27
-#define UE4_27 (ENGINE_MAJOR_VERSION == 4 && ENGINE_MINOR_VERSION >= 27)
-#endif
-
-#ifndef UE5
-#define UE5 (ENGINE_MAJOR_VERSION == 5)
-#endif
-
-#ifndef UE5_0
-#define UE5_0 (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION == 0)
-#endif
-
-#ifndef UE5_1
-#define UE5_1_ONWARDS (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 1)
-#endif
-
-#ifndef PRE_UE5_1
-#define PRE_UE5_1 (ENGINE_MAJOR_VERSION < 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 1))
-#endif
+#pragma message("  [" DEFINITION_FILE "]  COMPILING ON UE `" UE_STRINGIZE(ENGINE_MAJOR_VERSION) "`.`" UE_STRINGIZE(ENGINE_MINOR_VERSION) "`.`" UE_STRINGIZE(ENGINE_PATCH_VERSION) "`  [`" UE_STRINGIZE(BRANCH_NAME) "`]")
 
 #undef DEFINITION_FILE

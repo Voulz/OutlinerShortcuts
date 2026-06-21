@@ -1,10 +1,6 @@
-// Copyright Voulz 2021-2022. All Rights Reserved.
+// Copyright Voulz. All Rights Reserved.
 
 #pragma once
-
-#include "CoreMinimal.h"
-#include "UObject/Class.h"
-#include "UObject/ReflectedTypeAccessors.h"
 
 #include "OutlinerShortcutsSettings.generated.h"
 
