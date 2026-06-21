@@ -1,4 +1,4 @@
-// Copyright Voulz 2021-2022. All Rights Reserved.
+// Copyright Voulz. All Rights Reserved.
 
 #pragma once
 
