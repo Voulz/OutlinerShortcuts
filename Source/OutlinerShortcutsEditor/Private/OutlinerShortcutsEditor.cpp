@@ -5,7 +5,6 @@
 #include "OutlinerShortcutsEditorDefinitions.h"
 #include "LevelEditor.h"
 #include "ISceneOutliner.h"
-#include "Widgets/Views/STreeView.h"
 #include "SceneOutlinerFwd.h"
 #include "SSceneOutliner.h"
 
@@ -15,13 +14,12 @@
 #include "OutlinerShortcutsSettings.h"
 
 #include "Framework/Docking/TabManager.h"
+#include "Widgets/Docking/SDockTab.h"
 
 #define LOCTEXT_NAMESPACE "FOutlinerShortcutsEditorModule"
 
 void FOutlinerShortcutsEditorModule::StartupModule()
 {
-	OUTLINER_SHORTCUTS_HERE;
-
 	// -- Register Settings
 	RegisterSettings();
 
@@ -39,30 +37,10 @@ void FOutlinerShortcutsEditorModule::StartupModule()
 	}
 
 	OUTLINER_SHORTCUTS_LOG("`FOutlinerShortcutsEditorModule` Loaded");
-
-	// Test of Logs:
-	// OUTLINER_SHORTCUTS_WARN(" ==== [LogOutlinerShortcutsEditor Macro test] ==== ")
-	// OUTLINER_SHORTCUTS_LOG("OUTLINER_SHORTCUTS_LOG")
-	// OUTLINER_SHORTCUTS_LOG_H("OUTLINER_SHORTCUTS_LOG_H")
-	// OUTLINER_SHORTCUTS_LOG_D("OUTLINER_SHORTCUTS_LOG_D")
-	// OUTLINER_SHORTCUTS_LOGV("OUTLINER_SHORTCUTS_LOGV")
-	// OUTLINER_SHORTCUTS_LOGV_H("OUTLINER_SHORTCUTS_LOGV_H")
-	// OUTLINER_SHORTCUTS_WARN("OUTLINER_SHORTCUTS_WARN")
-	// OUTLINER_SHORTCUTS_WARN_H("OUTLINER_SHORTCUTS_WARN_H")
-	// OUTLINER_SHORTCUTS_WARN_D("OUTLINER_SHORTCUTS_WARN_D")
-	// OUTLINER_SHORTCUTS_ERROR("OUTLINER_SHORTCUTS_ERROR")
-	// OUTLINER_SHORTCUTS_ERROR_H("OUTLINER_SHORTCUTS_ERROR_H")
-	// OUTLINER_SHORTCUTS_WHERE
-	// OUTLINER_SHORTCUTS_HERE
-	// OUTLINER_SHORTCUTS_HERE_D
-	// OUTLINER_SHORTCUTS_LOG("OUTLINER_SHORTCUTS_BtoS: TRUE: %s  FALSE: %s", OUTLINER_SHORTCUTS_BtoS(true), OUTLINER_SHORTCUTS_BtoS(false))
-	// OUTLINER_SHORTCUTS_WARN(" ====  ==== ")
 }
 
 void FOutlinerShortcutsEditorModule::ShutdownModule()
 {
-	OUTLINER_SHORTCUTS_HERE;
-
 	OutlinerShortcutsCommands::Unregister();
 
 	for (int32 i = 0; i < ModuleListeners.Num(); ++i)
@@ -76,7 +54,6 @@ void FOutlinerShortcutsEditorModule::ShutdownModule()
 
 void FOutlinerShortcutsEditorModule::RegisterSettings()
 {
-	OUTLINER_SHORTCUTS_HERE;
 	ISettingsModule& SettingsModule = FModuleManager::LoadModuleChecked<ISettingsModule>("Settings");
 
 	SettingsModule.RegisterSettings("Editor", "Plugins", "Outliner Shortcuts",
@@ -90,7 +67,6 @@ void FOutlinerShortcutsEditorModule::RegisterSettings()
 
 void FOutlinerShortcutsEditorModule::UnregisterSettings()
 {
-	OUTLINER_SHORTCUTS_HERE;
 	ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings");
 	if (SettingsModule)
 	{
@@ -111,7 +87,6 @@ void FOutlinerShortcutsEditorModule::AddModuleListeners()
 
 void FOutlinerShortcutsEditorModule::MapCommands()
 {
-	OUTLINER_SHORTCUTS_HERE;
 	// initialize and register the commands
 	CommandList = MakeShareable(new FUICommandList);
 	OutlinerShortcutsCommands::Register();
@@ -132,7 +107,6 @@ void FOutlinerShortcutsEditorModule::MapCommands()
 			FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll();
 		}));
 
-#if UE5_1_ONWARDS
 	CommandList->MapAction(Commands.SceneOutlinerCollapseAllOutliners, FExecuteAction::CreateStatic(
 		[]() { 
 			FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners();
@@ -145,7 +119,6 @@ void FOutlinerShortcutsEditorModule::MapCommands()
 		[]() {
 			FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners();
 		}));
-#endif
 
 	// register the commands to the Level Editor to make them available to shortcuts
 	const FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
@@ -157,13 +130,10 @@ void FOutlinerShortcutsEditorModule::MapCommands()
 	{
 		OUTLINER_SHORTCUTS_ERROR_H("Not able to load `LevelEditor` module");
 	}
-
 }
 
 bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAll()
 {
-	OUTLINER_SHORTCUTS_HERE_D;
-
 	if (SSceneOutliner* SOutliner = GetSSceneOutliner())
 	{
 		if (IsSceneOutlinerReady(SOutliner))
@@ -171,11 +141,7 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAll()
 			SOutliner->CollapseAll();
 			return true;
 		}
-#if PRE_UE5_1
-		OUTLINER_SHORTCUTS_WARN_H("SceneOutliner is not ready");
-#else
 		OUTLINER_SHORTCUTS_WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
-#endif
 	}
 	else
 	{
@@ -204,11 +170,7 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseToRoot()
 			}
 			return true;
 		}
-#if PRE_UE5_1
-		OUTLINER_SHORTCUTS_WARN_H("SceneOutliner is not ready");
-#else
 		OUTLINER_SHORTCUTS_WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
-#endif
 	}
 	else
 	{
@@ -229,11 +191,7 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 			SOutliner->ExpandAll();
 			return true;
 		}
-#if PRE_UE5_1
-		OUTLINER_SHORTCUTS_WARN_H("SceneOutliner is not ready");
-#else
 		OUTLINER_SHORTCUTS_WARN_H("SceneOutliner `%s` is not ready", *SOutliner->GetOutlinerIdentifier().ToString());
-#endif
 	}
 	else
 	{
@@ -243,11 +201,8 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAll()
 	return false;
 }
 
-#if UE5_1_ONWARDS
 bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners()
 {
-	OUTLINER_SHORTCUTS_HERE_D;
-
 	bool bAllCollapsed = true;
 
 	TArray<SSceneOutliner*> SOutliners = GetAllSSceneOutliners();
@@ -275,8 +230,6 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutliners()
 
 bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutlinersToRoot()
 {
-	OUTLINER_SHORTCUTS_HERE_D;
-
 	bool bAllCollapsed = true;
 
 	TArray<SSceneOutliner*> SOutliners = GetAllSSceneOutliners();
@@ -312,8 +265,6 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerCollapseAllOutlinersToRoot()
 
 bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners()
 {
-	OUTLINER_SHORTCUTS_HERE_D;
-
 	bool bAllExpanded = true;
 
 	TArray<SSceneOutliner*> SOutliners = GetAllSSceneOutliners();
@@ -338,61 +289,14 @@ bool FOutlinerShortcutsEditorModule::SceneOutlinerExpandAllOutliners()
 
 	return bAllExpanded;
 }
-#endif
 
 ISceneOutliner* FOutlinerShortcutsEditorModule::GetISceneOutliner()
 {
-#if PRE_UE5_1
-	FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
-	if (LevelEditorModule)
-	{
-		if (ILevelEditor* LevelEditor = LevelEditorModule->GetFirstLevelEditor().Get())
-		{
-			
-			if (ISceneOutliner* SceneOutliner = LevelEditor->GetSceneOutliner().Get())
-			{
-				return SceneOutliner;
-			}
-			else
-			{
-				OUTLINER_SHORTCUTS_ERROR_H("Not able to get an `ISceneOutliner` through `LevelEditor->GetSceneOutliner()");
-			}
-		}
-		else
-		{
-			OUTLINER_SHORTCUTS_ERROR_H("Not able to get an `ILevelEditor` through `LevelEditorModule->GetFirstLevelEditor()`");
-		}
-	}
-	else
-	{
-		OUTLINER_SHORTCUTS_ERROR_H("Not able to load `LevelEditor` module");
-	}
-
-	return nullptr;
-#else
 	return GetSSceneOutliner();
-#endif
 }
 
 SSceneOutliner* FOutlinerShortcutsEditorModule::GetSSceneOutliner()
 {
-#if PRE_UE5_1
-	if (ISceneOutliner* SceneOutliner = GetISceneOutliner())
-	{
-		if (SSceneOutliner* SOutliner = (SSceneOutliner*)SceneOutliner)
-		{
-			return SOutliner;
-		}
-		else
-		{
-			OUTLINER_SHORTCUTS_ERROR_H("Not able to convert `ISceneOutliner` to `SSceneOutliner`");
-		}
-	}
-	else
-	{
-		OUTLINER_SHORTCUTS_ERROR_H("Not able to get `SceneOutliner`");
-	}
-#else
 	const FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
 	if (LevelEditorModule)
 	{
@@ -461,21 +365,13 @@ SSceneOutliner* FOutlinerShortcutsEditorModule::GetSSceneOutliner()
 	{
 		OUTLINER_SHORTCUTS_ERROR_H("Not able to load `LevelEditor` module");
 	}
-#endif
 
 	return nullptr;
 }
 
-#if UE5_1_ONWARDS
 TArray<ISceneOutliner*> FOutlinerShortcutsEditorModule::GetAllISceneOutliners()
 {
 	TArray<ISceneOutliner*> Outliners;
-#if PRE_UE5_1
-	if (ISceneOutliner* SceneOutliner = GetISceneOutliner())
-	{
-		Outliners.Add(SceneOutliner);
-	}
-#else
 	const FLevelEditorModule* LevelEditorModule = FModuleManager::LoadModulePtr<FLevelEditorModule>("LevelEditor");
 	if (LevelEditorModule)
 	{
@@ -502,8 +398,7 @@ TArray<ISceneOutliner*> FOutlinerShortcutsEditorModule::GetAllISceneOutliners()
 	{
 		OUTLINER_SHORTCUTS_ERROR_H("Not able to load `LevelEditor` module");
 	}
-#endif
-	
+
 	return Outliners;
 }
 
@@ -531,7 +426,6 @@ TArray<SSceneOutliner*> FOutlinerShortcutsEditorModule::GetAllSSceneOutliners()
 
 	return SOutliners;
 }
-#endif
 
 UWorld* FOutlinerShortcutsEditorModule::GetCurrentEditorWorld()
 {
@@ -540,7 +434,6 @@ UWorld* FOutlinerShortcutsEditorModule::GetCurrentEditorWorld()
 
 FSceneOutlinerTreeItemPtr FOutlinerShortcutsEditorModule::GetWorldTreeItemPtr(SSceneOutliner* SceneOutliner)
 {
-	//OUTLINER_SHORTCUTS_HERE;
 	if (SceneOutliner)
 	{
 		if (UWorld* World = GetCurrentEditorWorld())
@@ -563,7 +456,6 @@ FSceneOutlinerTreeItemPtr FOutlinerShortcutsEditorModule::GetWorldTreeItemPtr(SS
 
 bool FOutlinerShortcutsEditorModule::IsSceneOutlinerReady(SSceneOutliner* SceneOutliner)
 {
-	//OUTLINER_SHORTCUTS_HERE;
 	return GetWorldTreeItemPtr(SceneOutliner).IsValid();
 }
 
@@ -631,12 +523,10 @@ void OutlinerShortcutsCommands::RegisterCommands()
 	UI_COMMAND(SceneOutlinerCollapseAll, "Collapse All", "Collapse all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputChord());
 	UI_COMMAND(SceneOutlinerCollapseToRoot, "Collapse to Root", "Collapse all Actors and Folders in the current Scene Outliner but keep the root element expanded", EUserInterfaceActionType::Button, FInputChord());
 	UI_COMMAND(SceneOutlinerExpandAll, "Expand All", "Expand all Actors and Folders in the current Scene Outliner", EUserInterfaceActionType::Button, FInputChord());
-	
-#if UE5_1_ONWARDS
+
 	UI_COMMAND(SceneOutlinerCollapseAllOutliners, "Collapse All Outliners", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputChord());
 	UI_COMMAND(SceneOutlinerCollapseAllOutlinersToRoot, "Collapse All Outliners to Root", "[UE 5.1 Onwards] Collapse all Actors and Folders in ALL Scene Outliners but keep their root element expanded", EUserInterfaceActionType::Button, FInputChord());
 	UI_COMMAND(SceneOutlinerExpandAllOutliners, "Expand All Outliners", "[UE 5.1 Onwards] Expand all Actors and Folders in ALL Scene Outliners", EUserInterfaceActionType::Button, FInputChord());
-#endif
 
 	OUTLINER_SHORTCUTS_LOG("Commands Registered");
 }

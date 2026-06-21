@@ -26,6 +26,7 @@ public class OutlinerShortcutsEditor : ModuleRules
 			new string[]
 			{
 				"Core",
+				"Slate",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -36,13 +37,10 @@ public class OutlinerShortcutsEditor : ModuleRules
 			{
 				"CoreUObject",
 				"Engine",
-				"Slate",
 				"SlateCore",
-				// ... add private dependencies that you statically link with here ...	
 				"UnrealEd",
 				"LevelEditor",
 				"SceneOutliner",
-
 				"EditorStyle",
 				"InputCore",
 				"Settings",

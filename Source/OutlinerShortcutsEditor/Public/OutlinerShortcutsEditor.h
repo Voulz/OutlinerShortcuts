@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
 #include "SceneOutlinerFwd.h"
 #include "OutlinerShortcutsEditorDefinitions.h"
+#include "Framework/Commands/Commands.h"
 #include "Styling/AppStyle.h"
 
 class IModuleListenerInterface
@@ -48,21 +48,17 @@ public:
 	// Expand the most recently used Scene Outliner
 	static bool SceneOutlinerExpandAll();
 
-#if UE5_1_ONWARDS
 	// [UE 5.1 Onwards] Collapse all the opened Scene Outliners
 	static bool SceneOutlinerCollapseAllOutliners();
 	// [UE 5.1 Onwards] Collapse to root all the opened Scene Outliners
 	static bool SceneOutlinerCollapseAllOutlinersToRoot();
 	// [UE 5.1 Onwards] Expand all the opened Scene Outliners
 	static bool SceneOutlinerExpandAllOutliners();
-#endif
 
 	static ISceneOutliner* GetISceneOutliner();
 	static SSceneOutliner* GetSSceneOutliner();
-#if UE5_1_ONWARDS
 	static TArray<ISceneOutliner*> GetAllISceneOutliners();
 	static TArray<SSceneOutliner*> GetAllSSceneOutliners();
-#endif
 
 	FORCEINLINE static UWorld* GetCurrentEditorWorld();
 	static FSceneOutlinerTreeItemPtr GetWorldTreeItemPtr(SSceneOutliner* SceneOutliner);
@@ -78,11 +74,7 @@ public:
 		TEXT("OutlinerShortcutsCommands"), // Context name for fast lookup
 		FText::FromString("Outliner Shortcuts"), // Context name for displaying
 		NAME_None,   // No parent context
-//#if PRE_UE5_1
-//		FEditorStyle::GetStyleSetName() // Icon Style Set
-//#else
 		FAppStyle::GetAppStyleSetName()
-//#endif
 		)
 	{
 	}
@@ -93,9 +85,7 @@ public:
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAll;
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseToRoot;
 	TSharedPtr<FUICommandInfo> SceneOutlinerExpandAll;
-#if UE5_1_ONWARDS
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAllOutliners;
 	TSharedPtr<FUICommandInfo> SceneOutlinerCollapseAllOutlinersToRoot;
 	TSharedPtr<FUICommandInfo> SceneOutlinerExpandAllOutliners;
-#endif
 };
